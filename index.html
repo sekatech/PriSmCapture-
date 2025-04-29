@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>prisSmCapture</title>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f5f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #333;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 700px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .header {
+      border-bottom: 2px solid #00aaff;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      color: #00aaff;
+    }
+
+    video {
+      width: 100%;
+      max-width: 100%;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    select, button, input[type="number"] {
+      font-size: 1rem;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 2px solid #00aaff;
+      outline: none;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 15px;
+      max-width: 300px;
+      color: #fff;
+      background-color: #00aaff;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    select:hover, button:hover {
+      background-color: #008ecc;
+    }
+
+    #gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .image-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #gallery img {
+      width: 100%;
+      border-radius: 8px;
+      border: 2px solid #ddd;
+    }
+
+    .save-button {
+      margin-top: 5px;
+      padding: 5px 10px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .save-button:hover {
+      background-color: #218838;
+    }
+
+    .input-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    footer {
+      margin-top: 20px;
+      background-color: #00aaff;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    footer img {
+      width: 30px;
+      height: 30px;
+    }
+
+    footer span {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>PriSmCapture</h1>
+    </div>
+    <select id="camera-select">
+      <option value="user">Front Camera</option>
+      <option value="environment">Back Camera</option>
+    </select>
+    <video id="video" autoplay></video>
+    <div class="input-container">
+      <input type="number" id="capture-duration" placeholder="Seconds" min="1" max="60" />
+    </div>
+    <button id="start-button">Capture Images</button>
+    <div id="gallery"></div>
+  </div>
+
+  <footer>
+    <img src="https://via.placeholder.com/30" alt="Sekatech Logo" />
+    <span>Sekatech Softwares</span>
+  </footer>
+
+  <script>
+    const video = document.getElementById("video");
+    const startButton = document.getElementById("start-button");
+    const gallery = document.getElementById("gallery");
+    const cameraSelect = document.getElementById("camera-select");
+    const captureDurationInput = document.getElementById("capture-duration");
+
+    let currentStream;
+
+    async function startCamera(facingMode = "user") {
+      try {
+        if (currentStream) {
+          currentStream.getTracks().forEach(track => track.stop());
+        }
+
+        const constraints = {
+          video: {
+            facingMode: { exact: facingMode },
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          }
+        };
+
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        currentStream = stream;
+        video.srcObject = stream;
+      } catch (err) {
+        console.error("Error accessing the camera: ", err);
+        alert("Could not access the selected camera.");
+      }
+    }
+
+    function captureImages(durationInSeconds) {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      const framesPerSecond = 10; // Capture 10 frames per second
+      const totalFrames = durationInSeconds * framesPerSecond;
+      const captureIntervalMs = 1000 / framesPerSecond;
+
+      let framesCaptured = 0;
+
+      const intervalId = setInterval(() => {
+        if (framesCaptured >= totalFrames) {
+          clearInterval(intervalId);
+          return;
+        }
+
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const img = document.createElement("img");
+        img.src = canvas.toDataURL("image/png");
+
+        const imageContainer = document.createElement("div");
+        imageContainer.className = "image-container";
+
+        const saveButton = document.createElement("button");
+        saveButton.className = "save-button";
+        saveButton.textContent = "Save";
+        saveButton.addEventListener("click", () => saveImage(img.src));
+
+        imageContainer.appendChild(img);
+        imageContainer.appendChild(saveButton);
+        gallery.appendChild(imageContainer);
+
+        framesCaptured++;
+      }, captureIntervalMs);
+    }
+
+    function saveImage(dataUrl) {
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = "captured-image.png";
+      a.click();
+    }
+
+    cameraSelect.addEventListener("change", () => {
+      const selectedFacingMode = cameraSelect.value;
+      startCamera(selectedFacingMode);
+    });
+
+    startButton.addEventListener("click", () => {
+      const duration = parseInt(captureDurationInput.value, 10);
+      if (!duration || duration < 1 || duration > 60) {
+        alert("Please enter a valid duration between 1 and 60 seconds.");
+        return;
+      }
+
+      gallery.innerHTML = ""; // Clear existing images
+      captureImages(duration);
+    });
+
+    // Start with the selected camera (default to front)
+    startCamera(cameraSelect.value);
+  </script>
+</body>
+</html>
