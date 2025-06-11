@@ -1,261 +1,403 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>prisSmCapture</title>
-  <style>
-    /* General Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎂 Happy Birthday, Daulie! 🎉</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            color: #fff;
+        }
 
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #f4f5f7;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      color: #333;
-      flex-direction: column;
-    }
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;700&display=swap');
 
-    .container {
-      width: 90%;
-      max-width: 700px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      text-align: center;
-      padding: 20px;
-    }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
 
-    .header {
-      border-bottom: 2px solid #00aaff;
-      padding-bottom: 15px;
-      margin-bottom: 20px;
-    }
+        .header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: bounce 2s infinite;
+        }
 
-    .header h1 {
-      font-size: 1.8rem;
-      color: #00aaff;
-    }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
 
-    video {
-      width: 100%;
-      max-width: 100%;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            animation: pulse 1.5s infinite;
+        }
 
-    select, button, input[type="number"] {
-      font-size: 1rem;
-      padding: 10px 20px;
-      border-radius: 8px;
-      border: 2px solid #00aaff;
-      outline: none;
-      cursor: pointer;
-      width: 100%;
-      margin-bottom: 15px;
-      max-width: 300px;
-      color: #fff;
-      background-color: #00aaff;
-      font-weight: bold;
-      transition: all 0.3s ease;
-    }
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
 
-    select:hover, button:hover {
-      background-color: #008ecc;
-    }
+        .photo-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
 
-    #gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 10px;
-      margin-top: 20px;
-    }
+        .photo-gallery img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
 
-    .image-container {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+        .photo-gallery img:hover {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
 
-    #gallery img {
-      width: 100%;
-      border-radius: 8px;
-      border: 2px solid #ddd;
-    }
+        .countdown {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            backdrop-filter: blur(5px);
+        }
 
-    .save-button {
-      margin-top: 5px;
-      padding: 5px 10px;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 12px;
-      cursor: pointer;
-    }
+        #timer {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 10px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
 
-    .save-button:hover {
-      background-color: #218838;
-    }
+        #timer span {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 10px 15px;
+            border-radius: 8px;
+            min-width: 80px;
+            display: inline-block;
+        }
 
-    .input-container {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+        .music-player {
+            margin: 30px 0;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
 
-    footer {
-      margin-top: 20px;
-      background-color: #00aaff;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
+        .birthday-card {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
 
-    footer img {
-      width: 30px;
-      height: 30px;
-    }
+        .birthday-card::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+            background-size: 400% 400%;
+            z-index: -1;
+            animation: gradientBG 15s ease infinite;
+            border-radius: 20px;
+        }
 
-    footer span {
-      font-size: 1rem;
-      font-weight: bold;
-    }
-  </style>
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .balloon {
+            position: absolute;
+            width: 40px;
+            height: 50px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        .balloon::before {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 100px;
+            background: #333;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .balloon:nth-child(2) {
+            background: #48dbfb;
+            left: 15%;
+            top: 30%;
+            animation-delay: 1s;
+        }
+
+        .balloon:nth-child(3) {
+            background: #1dd1a1;
+            right: 20%;
+            top: 40%;
+            animation-delay: 2s;
+        }
+
+        .balloon:nth-child(4) {
+            background: #feca57;
+            left: 25%;
+            top: 60%;
+            animation-delay: 3s;
+        }
+
+        .balloon:nth-child(5) {
+            background: #ff9ff3;
+            right: 15%;
+            top: 70%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(5deg); }
+            50% { transform: translateY(-50px) rotate(-5deg); }
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .party-time {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ff0;
+            text-shadow: 0 0 10px #fff, 0 0 20px #ff0, 0 0 30px #ff0;
+            animation: glow 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { opacity: 0.8; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            #timer {
+                flex-direction: column;
+                gap: 5px;
+            }
+            #timer span {
+                width: 100%;
+            }
+            .party-time {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>PriSmCapture</h1>
+    <canvas id="confetti"></canvas>
+    
+    <!-- Floating Balloons -->
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Happy Birthday, Daulie! 🎂</h1>
+            <p class="subtitle">Wishing you the most magical day ever! ✨</p>
+        </div>
+
+        <div class="photo-gallery">
+            <!-- Replace these with actual images of Daulie -->
+            <img src="1.png" alt="Daulie">
+            <img src="2.png" alt="Daulie">
+            <img src="3.png" alt="Daulie">
+        </div>
+
+        <div class="countdown">
+            <h2>🎂 Today Is Your Special Day! 🎊</h2>
+            <div class="party-time">PARTY TIME! 🎉</div>
+        </div>
+
+        <div class="music-player">
+            <h2>🎵 Birthday Playlist 🎶</h2>
+            <audio controls autoplay loop>
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+
+        <div class="birthday-card">
+            <h2>💌 A Special Message For You</h2>
+            <p>Dear Daulie,</p>
+            <p>On your special day, I hope you're surrounded by joy, laughter, and all the people you love most!</p>
+            <p>May this year bring you endless happiness, exciting adventures, and dreams that come true.</p>
+            <p>You're an amazing person who deserves the absolute best. Enjoy every moment of your special day!</p>
+            <p>With lots of love,</p>
+            <p>seka alvin sufiano</p>
+        </div>
     </div>
-    <select id="camera-select">
-      <option value="user">Front Camera</option>
-      <option value="environment">Back Camera</option>
-    </select>
-    <video id="video" autoplay></video>
-    <div class="input-container">
-      <input type="number" id="capture-duration" placeholder="Seconds" min="1" max="60" />
-    </div>
-    <button id="start-button">Capture Images</button>
-    <div id="gallery"></div>
-  </div>
 
-  <footer>
-    <img src="https://via.placeholder.com/30" alt="Sekatech Logo" />
-    <span>Sekatech Softwares</span>
-  </footer>
+    <script>
+        // Confetti Animation
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-  <script>
-    const video = document.getElementById("video");
-    const startButton = document.getElementById("start-button");
-    const gallery = document.getElementById("gallery");
-    const cameraSelect = document.getElementById("camera-select");
-    const captureDurationInput = document.getElementById("capture-duration");
+        const confettiPieces = [];
+        const colors = ['#ff9ff3', '#feca57', '#ff6b6b', '#48dbfb', '#1dd1a1'];
 
-    let currentStream;
+        class Confetti {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.size = Math.random() * 10 + 5;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.speed = Math.random() * 3 + 1;
+                this.angle = Math.random() * 360;
+                this.spin = Math.random() < 0.5 ? -1 : 1;
+                this.shape = Math.random() > 0.5 ? 'circle' : 'rect';
+            }
 
-    async function startCamera(facingMode = "user") {
-      try {
-        if (currentStream) {
-          currentStream.getTracks().forEach(track => track.stop());
+            update() {
+                this.y += this.speed;
+                this.angle += 0.1 * this.spin;
+                if (this.y > canvas.height) {
+                    this.y = 0;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle * Math.PI / 180);
+                ctx.fillStyle = this.color;
+                
+                if (this.shape === 'circle') {
+                    ctx.beginPath();
+                    ctx.arc(0, 0, this.size/2, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+                }
+                
+                ctx.restore();
+            }
         }
 
-        const constraints = {
-          video: {
-            facingMode: { exact: facingMode },
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
-          }
-        };
-
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        currentStream = stream;
-        video.srcObject = stream;
-      } catch (err) {
-        console.error("Error accessing the camera: ", err);
-        alert("Could not access the selected camera.");
-      }
-    }
-
-    function captureImages(durationInSeconds) {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-
-      const framesPerSecond = 10; // Capture 10 frames per second
-      const totalFrames = durationInSeconds * framesPerSecond;
-      const captureIntervalMs = 1000 / framesPerSecond;
-
-      let framesCaptured = 0;
-
-      const intervalId = setInterval(() => {
-        if (framesCaptured >= totalFrames) {
-          clearInterval(intervalId);
-          return;
+        for (let i = 0; i < 150; i++) {
+            confettiPieces.push(new Confetti());
         }
 
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const img = document.createElement("img");
-        img.src = canvas.toDataURL("image/png");
+        function animateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            confettiPieces.forEach(piece => {
+                piece.update();
+                piece.draw();
+            });
+            requestAnimationFrame(animateConfetti);
+        }
+        animateConfetti();
 
-        const imageContainer = document.createElement("div");
-        imageContainer.className = "image-container";
+        // Balloon animation
+        document.addEventListener('mousemove', function(e) {
+            const balloons = document.querySelectorAll('.balloon');
+            balloons.forEach(balloon => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                balloon.style.transform = `translate(${x * 20 - 10}px, ${y * 20 - 10}px)`;
+            });
+        });
 
-        const saveButton = document.createElement("button");
-        saveButton.className = "save-button";
-        saveButton.textContent = "Save";
-        saveButton.addEventListener("click", () => saveImage(img.src));
+        // Typewriter effect for birthday message
+        const message = document.querySelector('.birthday-card p:nth-child(2)');
+        if (message) {
+            const text = message.textContent;
+            message.textContent = '';
+            let i = 0;
+            const typing = setInterval(() => {
+                if (i < text.length) {
+                    message.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typing);
+                }
+            }, 50);
+        }
 
-        imageContainer.appendChild(img);
-        imageContainer.appendChild(saveButton);
-        gallery.appendChild(imageContainer);
+        // Special effects for birthday day
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.position = 'fixed';
+            heart.style.fontSize = Math.random() * 30 + 20 + 'px';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = -50 + 'px';
+            heart.style.zIndex = '9999';
+            heart.style.opacity = '0.8';
+            heart.style.animation = 'float-heart 5s ease-in forwards';
+            document.body.appendChild(heart);
 
-        framesCaptured++;
-      }, captureIntervalMs);
-    }
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
 
-    function saveImage(dataUrl) {
-      const a = document.createElement("a");
-      a.href = dataUrl;
-      a.download = "captured-image.png";
-      a.click();
-    }
+        // Add floating hearts animation
+        setInterval(createHeart, 300);
 
-    cameraSelect.addEventListener("change", () => {
-      const selectedFacingMode = cameraSelect.value;
-      startCamera(selectedFacingMode);
-    });
-
-    startButton.addEventListener("click", () => {
-      const duration = parseInt(captureDurationInput.value, 10);
-      if (!duration || duration < 1 || duration > 60) {
-        alert("Please enter a valid duration between 1 and 60 seconds.");
-        return;
-      }
-
-      gallery.innerHTML = ""; // Clear existing images
-      captureImages(duration);
-    });
-
-    // Start with the selected camera (default to front)
-    startCamera(cameraSelect.value);
-  </script>
+        // Add CSS for floating hearts
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes float-heart {
+                0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+                100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
